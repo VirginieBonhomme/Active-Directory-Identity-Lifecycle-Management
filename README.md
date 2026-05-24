@@ -111,7 +111,7 @@ I created the first four users by hand, clicking through menus in a tool called 
 
 | Name | Username | Department | Group |
 |---|---|---|---|
-| Steven Williams | `swilliams` | IT | `IT-Admins` |
+| Steven Williams | `s.williams` | IT | `IT-Admins` |
 | Sarah Chen | `s.chen` | Finance | `Finance-ReadOnly` |
 | Tom Harris | `t.harris` | HR | `HR-ReadOnly` |
 | James Wilson | `j.wilson` | Management | `Management-ReadOnly` |
@@ -175,7 +175,7 @@ Creating an account and adding it to a group are two separate steps. After all a
 ```powershell
 Add-ADGroupMember -Identity "Finance-ReadOnly"    -Members "s.chen","l.martinez"
 Add-ADGroupMember -Identity "HR-ReadOnly"         -Members "t.harris","d.thompson"
-Add-ADGroupMember -Identity "IT-Admins"           -Members "swilliams","e.davis"
+Add-ADGroupMember -Identity "IT-Admins"           -Members "s.williams","e.davis"
 Add-ADGroupMember -Identity "Management-ReadOnly" -Members "j.wilson","r.brown"
 ```
 
@@ -306,7 +306,7 @@ This lab was about defense — building and managing accounts properly. But ever
 | What I Built | Why Attackers Go After It | Lab 01 Attack |
 |---|---|---|
 | The domain controller running on ADDC01 | It stores every password on the network | `T1003` — attacker pulled password data from memory |
-| `swilliams` account with a weak password | Easy passwords are easy to guess | `T1110` — a tool called Hydra guessed the password automatically |
+| `s.williams` account with a weak password | Easy passwords are easy to guess | `T1110` — a tool called Hydra guessed the password automatically |
 | The Domain Admins group | Members of this group control everything | `T1078` — attackers look for high-privilege accounts to take over |
 | Remote access (RDP) turned on | Lets people log in from anywhere — including attackers | `T1021.001` — tools called Crowbar and Hydra attacked the remote login |
 
