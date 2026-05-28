@@ -23,7 +23,7 @@
 - [What I Learned](#what-i-learned)
 - [Problems I Hit and How I Fixed Them](#problems-i-hit-and-how-i-fixed-them)
 - [Screenshots](#screenshots)
-- [What Comes Next](#what-comes-next)
+
 
 ---
 
@@ -40,11 +40,9 @@
 
 ## What This Lab Was About
 
-In Lab 01, I built the domain `redblue.local` from scratch — think of a domain like a company's private network that controls who can log in and what they can do.
+In Lab 01, I built the `redblue.local` Active Directory domain from scratch to simulate a small company network. This allowed me to practice managing user access, authentication, and permissions in a controlled lab environment.
 
-In this lab, I used that domain to practice the everyday tasks that IT helpdesk and security teams actually do: setting up new employees, removing old ones, resetting forgotten passwords, and making sure everything gets recorded automatically.
-
-The big takeaway: **every single thing you do to a user account is automatically saved as a log.** Nothing is invisible. That matters both for security and for accountability.
+A major takeaway from this lab was understanding that user account activity is logged and can be reviewed for security, troubleshooting, and accountability. This reinforced the importance of audit logs for tracking administrative actions and investigating suspicious or unauthorized changes.
 
 ---
 
@@ -79,17 +77,18 @@ redblue.local
 ```
 
 > **Why a Disabled folder?**  
-> When someone leaves a company, you don't delete their account right away. You turn it off and move it to this folder. You keep it for 30 days before deleting it permanently. That way, if anyone ever asks "what did that person access before they left?" — the record still exists.
+> In a business environment, user accounts are usually not deleted immediately when an employee leaves. Instead, the account is disabled and moved to a designated Disabled Users folder for a retention period, such as 30 days.
+This helps preserve account history for auditing, troubleshooting, and security investigations. If the organization needs to review what the user accessed before leaving, the account record is still available.
 
-`screenshots/lab-02/ou-structure.png`
+<img width="1280" height="720" alt="aduc-ou-structure-complete" src="https://github.com/user-attachments/assets/cba0514d-af7c-4ed9-bb4c-feb790f862ff" />
 
 ---
 
 ### Step 2 — Creating Access Groups
 
-Instead of giving each person their own individual permissions, you put people into **groups** and give the group permissions. Everyone in the group automatically gets the same access.
+Instead of assigning permissions to each user individually, I created access **groups** to manage permissions more efficiently. Users are added to groups based on their role, and each group is assigned the permissions needed for that role.
 
-This is called **role-based access control** — one of the most important ideas in IT security. The rule is simple: give people only the access they need to do their job, nothing more.
+This follows the principle of **role-based access control** **(RBAC)**, where users receive only the access required to perform their job duties. RBAC helps improve security, reduce permission errors, and make access management easier to maintain.
 
 | Group Name | Folder | What This Group Can Do |
 |---|---|---|
@@ -98,10 +97,13 @@ This is called **role-based access control** — one of the most important ideas
 | `HR-ReadOnly` | HR | Can read employee records but cannot change anything |
 | `Management-ReadOnly` | Management | Can view data across departments but cannot change anything |
 
-> **Why name them `Finance-ReadOnly` instead of just `Finance`?**  
-> The name tells anyone looking at it exactly what access the group provides. In a large company with hundreds of groups, clear names make everything faster and safer.
+> **Why name them `HR-ReadOnly` instead of just `HR`?**  
+> Clear group names make permissions easier to understand and manage. A name like **HR-ReadOnly** tells administrators exactly which department the group belongs to and what level of access it provides.
+> 
+In a larger environment with many security groups, consistent naming helps reduce confusion, prevent permission mistakes, and make audits easier.
 
-`screenshots/lab-02/` — Each group inside its correct folder
+`Example of one of the groups I created/` — HR group inside its correct folder
+<img width="1280" height="720" alt="aduc-create-hr-readOnly-group" src="https://github.com/user-attachments/assets/e15f1b8b-d540-42fa-99da-b62e6e7d38e9" />
 
 ---
 
@@ -122,19 +124,23 @@ For each account I:
 - Turned on **"User must change password at next logon"**
 
 > **Why force a password change on first login?**  
-> If I set a password and the user never changes it, I still know their password — which is a security problem. Forcing them to create their own password at first login means only they know it from day one.
+> When an administrator creates a new user account, they often assign a temporary password. If the user is not required to change it, the administrator would still know that password, which creates a security risk.
+> 
+Forcing a password change at first login ensures the user creates their own private password. This supports better account security, protects user privacy, and helps ensure that only the account owner knows their login credentials.
 
-`screenshots/lab-02/gui-users-*.png`
+<img width="1280" height="720" alt="VirtualBox_ADDC01_19_05_2026_17_00_41" src="https://github.com/user-attachments/assets/4b0b6db1-43d1-48c6-979c-e9e9ccaf3028" />
+
 
 ---
 
 ### Step 4 — Adding Users Automatically with a Script
 
-Creating accounts one at a time is fine for a few people. But imagine a company that hires 50 people at once — that would take hours and introduce mistakes.
+Creating user accounts manually works for a small number of users, but it does not scale well in a business environment. If a company hires many employees at once, creating each account individually can take a significant amount of time and increase the risk of errors.
 
-The solution is a **script** — a set of instructions you write once and then run. I created a simple spreadsheet file listing four new users, then wrote a script that read the file and created all four accounts automatically.
+For this step, I wanted to challenge myself by using **scripting** instead of only creating accounts manually. I researched proper PowerShell scripts for bulk user creation, created a simple user list using the Notes app, and used the script to create multiple accounts from that list automatically.
 
-**The spreadsheet (`users.csv`)**
+This helped me understand how scripting and automation can make IT administration faster, more consistent, and less error-prone.
+
 
 ```csv
 FirstName,LastName,Username,Department,OU
@@ -162,9 +168,10 @@ Import-Csv "C:\Users\Administrator\Desktop\users.csv" | ForEach-Object {
 }
 ```
 
-The script reads each row of the spreadsheet and creates one user account per row, placing each person in the correct folder automatically.
+The script reads each row of the csv and creates one user account per row, placing each person in the correct folder automatically.
 
-`screenshots/lab-02/powershell-bulk-import.png`
+<img width="1280" height="720" alt="VirtualBox_ADDC01_19_05_2026_17_22_17" src="https://github.com/user-attachments/assets/9fa33d42-5eb9-4e74-be86-063d124b6f8b" />
+
 
 ---
 
@@ -189,15 +196,16 @@ foreach ($group in $groups) {
 }
 ```
 
-`screenshots/lab-02/powershell-group-verification.png`
+<img width="1280" height="720" alt="VirtualBox_ADDC01_19_05_2026_17_59_01" src="https://github.com/user-attachments/assets/df5ae88a-4bb9-4e1c-b92b-5cecda135a13" />
+<img width="1280" height="720" alt="VirtualBox_ADDC01_19_05_2026_18_00_51" src="https://github.com/user-attachments/assets/9aba6b2c-a208-4cc9-a9cf-62e5e0d72540" />
+
 
 ---
 
 ## Common Helpdesk Tasks I Practiced
 
-These are three of the most common tickets any IT helpdesk handles every day.
 
-### Task 1 — Turning Off an Account: Tom Harris
+### Task 1 — Disabled an Account: Tom Harris
 
 **Situation:** Tom Harris left the company.
 
@@ -208,7 +216,7 @@ These are three of the most common tickets any IT helpdesk handles every day.
 
 > Deleting an account immediately destroys all records of what that person did. Keeping a disabled account for 30 days protects the company if questions come up later.
 
-`screenshots/lab-02/tom-harris-disabled-ou.png`
+<img width="1280" height="720" alt="VirtualBox_ADDC01_19_05_2026_19_18_11" src="https://github.com/user-attachments/assets/6d225254-f111-4044-a954-dc45c178c90d" />
 
 ---
 
@@ -222,7 +230,8 @@ These are three of the most common tickets any IT helpdesk handles every day.
 
 > This way I give her a temporary way back in, but she immediately replaces it with something only she knows. The helpdesk never has long-term access to a user's password.
 
-`screenshots/lab-02/sarah-chen-password-reset.png`
+<img width="1280" height="720" alt="VirtualBox_ADDC01_19_05_2026_19_24_09" src="https://github.com/user-attachments/assets/70cfc91d-e636-4177-8f6f-943484302d04" />
+
 
 ---
 
@@ -236,15 +245,17 @@ These are three of the most common tickets any IT helpdesk handles every day.
 
 > Deleting is always the last step, never the first. The correct order is: disable → move to Disabled folder → wait 30 days → delete with approval.
 
-`screenshots/lab-02/linda-martinez-deleted.png`
+<img width="1280" height="720" alt="VirtualBox_ADDC01_19_05_2026_19_25_01" src="https://github.com/user-attachments/assets/a4580afc-e395-4051-8d0d-7855e44795c4" />
+<img width="1280" height="720" alt="VirtualBox_ADDC01_19_05_2026_19_25_28" src="https://github.com/user-attachments/assets/3b23262a-6f90-42ce-bd12-9ef806e74359" />
+
+
 
 ---
 
 ## Checking My Work in Splunk
 
-This was one of the most important things I learned. **Every action I took in Active Directory automatically created a log entry in Splunk.** I did not have to do anything special to make this happen — it just works.
-
-This means in a real company, nothing you do to a user account is invisible. Every change leaves a record.
+One of the most important parts of this lab was verifying that my **Active Directory** actions were being captured in **Splunk**. As I created, modified, and managed user accounts, those actions generated log entries that could be searched and reviewed.
+This helped me understand how logging supports security monitoring, troubleshooting, and accountability.
 
 ### What Each Log Code Means
 
@@ -372,21 +383,6 @@ All screenshots are in `/screenshots/lab-02/`
 | `splunk-4725-account-disabled.png` | Splunk log — Tom Harris disabled |
 | `splunk-4726-account-deleted.png` | Splunk log — Linda Martinez deleted |
 | `splunk-lab02-all-events.png` | Splunk — every Lab 02 action in one view |
-
----
-
-## What Comes Next
-
-**Lab 03 — Helpdesk Ticketing (Spiceworks)**
-
-Every task from this lab becomes a formal support ticket:
-
-- New employee setup — Steven Williams, Sarah Chen, Tom Harris, James Wilson
-- Employee departure — Tom Harris account disabled and moved
-- Password reset — Sarah Chen
-- Security escalation — the credential attack from Lab 01
-
-Each ticket will link back to the Splunk log codes from this lab, creating a complete paper trail from the account change all the way to the support ticket.
 
 ---
 
