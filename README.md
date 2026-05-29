@@ -330,14 +330,14 @@ This lab was about defense — building and managing accounts properly. But ever
 
 ## What I Learned
 
-**Folders do more than organize — they control security rules.**  
+**Folders do more than organize, they control security rules.**  
 When I created the department folders, I was not just tidying things up. Folders in Active Directory are where security policies get applied. If Finance users need a stricter password policy than IT staff, you set that on the folder and it applies automatically to everyone inside.
 
 **Name your groups so anyone can understand them.**  
-`Finance-ReadOnly` tells you exactly what it does. `Finance-Users` tells you nothing about access. Good names make security audits faster and mistakes less likely.
+`HR-ReadOnly` tells you exactly what it does. `HR-Users` tells you nothing about access. Good names make security audits faster and mistakes less likely.
 
 **Scripts save enormous amounts of time.**  
-Four users by hand took several minutes. The script did four users in seconds. At the scale of a real company, this is not optional — it is the only practical way to work.
+Four users by hand took several minutes. The script did four users in seconds. At the scale of a real company.
 
 **The Disabled folder is a real security practice.**  
 It is not just about being organized. It gives you a clear place to track who has been deactivated, confirm they truly cannot log in, and know exactly when their 30-day window expires.
