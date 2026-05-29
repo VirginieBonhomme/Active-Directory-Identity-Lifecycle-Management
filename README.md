@@ -276,6 +276,7 @@ index=endpoint host=ADDC01 EventCode=4720
 | table _time, EventCode, Account_Name, ComputerName
 | sort -_time
 ```
+<img width="1024" height="768" alt="VirtualBox_Target-PC_19_05_2026_19_57_09" src="https://github.com/user-attachments/assets/75833db5-86b9-4a75-878d-032f7fba7fef" />
 
 **See every group change:**
 ```spl
@@ -283,6 +284,7 @@ index=endpoint host=ADDC01 EventCode=4728
 | table _time, EventCode, Account_Name, ComputerName
 | sort -_time
 ```
+<img width="1024" height="768" alt="VirtualBox_Target-PC_19_05_2026_19_58_28" src="https://github.com/user-attachments/assets/9125f8f4-f38d-4f85-828b-a1e1d52b8428" />
 
 **See every account that was disabled:**
 ```spl
@@ -290,6 +292,8 @@ index=endpoint host=ADDC01 EventCode=4725
 | table _time, EventCode, Account_Name, ComputerName
 | sort -_time
 ```
+<img width="1024" height="768" alt="VirtualBox_Target-PC_19_05_2026_20_00_40" src="https://github.com/user-attachments/assets/f319ddfd-e4b3-4e26-aa13-c4452ab5c309" />
+
 
 **See every account that was deleted:**
 ```spl
@@ -297,6 +301,7 @@ index=endpoint host=ADDC01 EventCode=4726
 | table _time, EventCode, Account_Name, ComputerName
 | sort -_time
 ```
+<img width="1024" height="768" alt="VirtualBox_Target-PC_19_05_2026_20_01_50" src="https://github.com/user-attachments/assets/f71a5349-1529-4519-976d-41f94abccef7" />
 
 **See everything from this lab in one view:**
 ```spl
@@ -306,7 +311,7 @@ index=endpoint host=ADDC01
 | sort -_time
 ```
 
-`screenshots/lab-02/splunk-lab02-all-events.png`
+<img width="1024" height="768" alt="VirtualBox_Target-PC_19_05_2026_20_27_45" src="https://github.com/user-attachments/assets/d5ff80d6-dfca-4fb4-bb48-d97abf0beca7" />
 
 ---
 
@@ -342,47 +347,6 @@ Before this lab I knew logs existed. After this lab I understood what that actua
 
 **Disable first, delete last.**  
 This sequence exists for a reason: Disable → move to Disabled folder → wait 30 days → delete with approval. Skipping steps either creates a security hole or destroys evidence.
-
----
-
-## Problems I Hit and How I Fixed Them
-
-| Problem | What Caused It | How I Fixed It |
-|---|---|---|
-| Could not search for a user in the group dialog | That dialog only searches for groups, not users | Went through the user's own settings and added the group from there |
-| Group not found when trying to assign a user | I tried to add someone to a group that did not exist yet | Created the group first, then went back to the assignment |
-| Script only created one user instead of four | The other three already existed from my manual step and failed silently | Added a check to the script that prints `SKIPPED` if an account already exists |
-| Script threw errors when I pasted it in | The script had decorative `===` lines that PowerShell tried to read as commands | Removed the decorative lines and ran each command cleanly |
-
----
-
-## Screenshots
-
-All screenshots are in `/screenshots/lab-02/`
-
-| File | What It Shows |
-|---|---|
-| `ou-structure.png` | All five folders set up in Active Directory |
-| `finance-readOnly-group.png` | Finance-ReadOnly group created |
-| `hr-readOnly-group.png` | HR-ReadOnly group created |
-| `it-admins-group.png` | IT-Admins group created |
-| `management-readOnly-group.png` | Management-ReadOnly group created |
-| `gui-users-finance-ou.png` | Sarah Chen added manually |
-| `gui-users-hr-ou.png` | Tom Harris added manually |
-| `gui-users-it-ou.png` | Steven Williams added manually |
-| `gui-users-management-ou.png` | James Wilson added manually |
-| `users-csv-notepad.png` | The spreadsheet file used for bulk import |
-| `powershell-bulk-import.png` | Script output showing four users created at once |
-| `aduc-all-users-verified.png` | All eight users confirmed in the right folders |
-| `powershell-group-verification.png` | All groups confirmed with correct members |
-| `tom-harris-disabled-ou.png` | Tom Harris account disabled and moved |
-| `sarah-chen-password-reset.png` | Password reset with forced change at next login |
-| `linda-martinez-deleted.png` | Linda Martinez account permanently removed |
-| `splunk-4720-account-creation.png` | Splunk log — all eight accounts created |
-| `splunk-4728-group-membership.png` | Splunk log — all group assignments recorded |
-| `splunk-4725-account-disabled.png` | Splunk log — Tom Harris disabled |
-| `splunk-4726-account-deleted.png` | Splunk log — Linda Martinez deleted |
-| `splunk-lab02-all-events.png` | Splunk — every Lab 02 action in one view |
 
 ---
 
