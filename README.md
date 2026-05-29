@@ -21,8 +21,6 @@
 - [Checking My Work in Splunk](#checking-my-work-in-splunk)
 - [How This Connects to Real Attacks](#how-this-connects-to-real-attacks)
 - [What I Learned](#what-i-learned)
-- [Problems I Hit and How I Fixed Them](#problems-i-hit-and-how-i-fixed-them)
-- [Screenshots](#screenshots)
 
 
 ---
